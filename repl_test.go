@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"testing"
+	"fmt"
+)
 
 
 func TestCleanInput(t *testing.T) {
@@ -43,6 +46,36 @@ func TestCleanInput(t *testing.T) {
 				expected: %s
 				actual: %s`, c.input, i, expectedWord, word)
 			}
+		}
+	}
+}
+
+func TestHandleInput(t *testing.T) {
+	cases := []struct {
+		input    []string
+		expected error
+	}{
+		{
+			input: nil,
+			expected: fmt.Errorf("no input provided"),
+		},
+		{
+			input: []string{"definitelynotagoodaction"},
+			expected: fmt.Errorf("unknown action definitelynotagoodaction"),
+		},
+		{
+			input: []string{"help", "I", "dont", "know", "what", "to", "do"},
+			expected: nil,
+		},
+	}
+
+	for i, c := range cases {
+		actual := handleInput(c.input)
+		if actual != c.expected  && actual.Error() != c.expected.Error(){
+			t.Errorf(`TestHandleInput error for case %v with input '%s'
+			expected: %v
+			actual: %v`,i, c.input, c.expected, actual)
+			continue
 		}
 	}
 }

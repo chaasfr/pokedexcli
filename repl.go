@@ -1,10 +1,10 @@
 package main
 
 import (
-	"strings"
 	"bufio"
-	"os"
 	"fmt"
+	"os"
+	"strings"
 )
 
 func cleanInput(text string) []string {
@@ -13,19 +13,30 @@ func cleanInput(text string) []string {
 	return trimLowerText
 }
 
-func replStart(){
+func handleInput(input []string) error {
+	if len(input) == 0 {
+		return fmt.Errorf("no input provided")
+	}
+	action := input[0]
+
+	if command, ok := getCommands()[action]; ok {
+		return command.callback()
+	} else if action == "help" {
+		return commandHelp()
+	}
+
+	return fmt.Errorf("unknown action %s", action)
+}
+
+func replStart() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
 		text := scanner.Text()
-		textClean := cleanInput(text)
-
-		if len(textClean) > 0 {
-			toPrint := fmt.Sprintf("Your command was: %s", textClean[0])
-			fmt.Println(toPrint)
-		} else {
-			fmt.Println("Please provide a command")
+		if err := handleInput(cleanInput((text))); err != nil {
+			message := fmt.Sprintf("incorrect action: %s. Please use help to see the list of valid actions.", err)
+			fmt.Println(message)
 		}
 	}
 }
