@@ -68,9 +68,9 @@ func TestHandleInput(t *testing.T) {
 			expected: nil,
 		},
 	}
-
+	conf := initConf()
 	for i, c := range cases {
-		actual := handleInput(c.input)
+		actual := handleInput(c.input, &conf)
 		if actual != c.expected  && actual.Error() != c.expected.Error(){
 			t.Errorf(`TestHandleInput error for case %v with input '%s'
 			expected: %v
