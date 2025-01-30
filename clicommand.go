@@ -1,5 +1,12 @@
 package main
 
+import (
+	"time"
+
+	"github.com/chaasfr/pokedexcli/internal/pokeapi"
+	"github.com/chaasfr/pokedexcli/internal/pokecache"
+)
+
 type cliCommand struct {
 	name        string
 	description string
@@ -7,13 +14,17 @@ type cliCommand struct {
 }
 
 type configCommand struct {
-	next     string
-	previous string
+	nextLocationsUrl     string
+	previousLocationsUrl string
+	cache                *pokecache.Cache
+	locationClient       *pokeapi.LocationCLient
 }
 
 func initConf() configCommand {
 	var conf configCommand
-	conf.next = "https://pokeapi.co/api/v2/location-area/"
+	conf.nextLocationsUrl = "https://pokeapi.co/api/v2/location-area/"
+	conf.cache = pokecache.NewCache(5 * time.Second)
+	conf.locationClient = pokeapi.NewClient(conf.cache)
 	return conf
 }
 
@@ -30,14 +41,14 @@ func getCommands() map[string]cliCommand {
 			callback:    commandHelp,
 		},
 		"map": {
-			name:         "map",
+			name:        "map",
 			description: "Returns the next 20 locations. Use mapb to reverse.",
-			callback: CommandMap,
+			callback:    CommandMap,
 		},
 		"mapb": {
-			name:         "map",
+			name:        "mapb",
 			description: "Returns the previous 20 locations. Use map to reverse.",
-			callback: CommandMapb,
+			callback:    CommandMapb,
 		},
 	}
 }
