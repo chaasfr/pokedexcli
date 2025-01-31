@@ -13,7 +13,7 @@ func cleanInput(text string) []string {
 	return trimLowerText
 }
 
-func handleInput(input []string, conf *configCommand) error {
+func handleInput(input []string, conf *config) error {
 	if len(input) == 0 {
 		return fmt.Errorf("no input provided")
 	}

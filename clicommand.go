@@ -1,28 +1,9 @@
 package main
 
-import (
-	"time"
-
-	"github.com/chaasfr/pokedexcli/internal/pokeapi"
-	"github.com/chaasfr/pokedexcli/internal/pokecache"
-)
-
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*configCommand, []string) error
-}
-
-type configCommand struct {
-	cache                *pokecache.Cache
-	locationClient       *pokeapi.LocationCLient
-}
-
-func initConf() configCommand {
-	var conf configCommand
-	conf.cache = pokecache.NewCache(5 * time.Second)
-	conf.locationClient = pokeapi.NewClient(conf.cache)
-	return conf
+	callback    func(*config, []string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -51,6 +32,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "Use explore [location_name]. Returns the pokemons found in this location",
 			callback:    CommandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Use catch [pokemon_name]. Tries to capture the pokemon",
+			callback:    CommandCatch,
 		},
 	}
 }

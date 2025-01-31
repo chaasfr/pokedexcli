@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func CommandExplore(conf *configCommand, args []string) error {
+func CommandExplore(conf *config, args []string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("arg missing. Please seek help on explore")
 	}
@@ -20,6 +20,6 @@ func CommandExplore(conf *configCommand, args []string) error {
 	for _, pokemonEncounter := range locationAreaResult.PokemonEncounters {
 		fmt.Println(" - " + pokemonEncounter.Pokemon.Name)
 	}
-	
+
 	return nil
 }

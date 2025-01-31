@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/chaasfr/pokedexcli/internal/pokeapi"
 )
 
-func CommandMap(conf *configCommand, args []string) error {
+func CommandMap(conf *config, args []string) error {
 	if conf.locationClient.NextLocationsUrl == "" {
 		fmt.Println("you're on the last page")
 		return nil
@@ -13,7 +14,7 @@ func CommandMap(conf *configCommand, args []string) error {
 	return getLocations(conf.locationClient.GetNextLocations)
 }
 
-func CommandMapb(conf *configCommand, args []string) error {
+func CommandMapb(conf *config, args []string) error {
 	if conf.locationClient.PreviousLocationsUrl == "" {
 		fmt.Println("you're on the first page")
 		return nil
@@ -21,7 +22,7 @@ func CommandMapb(conf *configCommand, args []string) error {
 	return getLocations(conf.locationClient.GetPreviousLocations)
 }
 
-func getLocations( getLocations func()(*pokeapi.LocationBulkResult, error)) error {
+func getLocations(getLocations func() (*pokeapi.LocationBulkResult, error)) error {
 	locationBulkResults, err := getLocations()
 	if err != nil {
 		return err
