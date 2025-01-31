@@ -20,7 +20,7 @@ func handleInput(input []string, conf *configCommand) error {
 	action := input[0]
 
 	if command, ok := getCommands()[action]; ok {
-		return command.callback(conf)
+		return command.callback(conf, input[1:])
 	}
 
 	return fmt.Errorf("unknown action %s", action)

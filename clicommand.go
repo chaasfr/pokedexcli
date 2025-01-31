@@ -10,19 +10,16 @@ import (
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*configCommand) error
+	callback    func(*configCommand, []string) error
 }
 
 type configCommand struct {
-	nextLocationsUrl     string
-	previousLocationsUrl string
 	cache                *pokecache.Cache
 	locationClient       *pokeapi.LocationCLient
 }
 
 func initConf() configCommand {
 	var conf configCommand
-	conf.nextLocationsUrl = "https://pokeapi.co/api/v2/location-area/"
 	conf.cache = pokecache.NewCache(5 * time.Second)
 	conf.locationClient = pokeapi.NewClient(conf.cache)
 	return conf
@@ -49,6 +46,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Returns the previous 20 locations. Use map to reverse.",
 			callback:    CommandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Use explore [location_name]. Returns the pokemons found in this location",
+			callback:    CommandExplore,
 		},
 	}
 }
