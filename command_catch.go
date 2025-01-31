@@ -22,7 +22,6 @@ func CommandCatch(conf *config, args []string) error {
 		return err
 	}
 	fmt.Printf("Throwing a Pokeball at %s...\n", name)
-	fmt.Printf("pokemon: %s - baseExp: %v\n", name, pokemon.BaseExperience)
 
 	if IsCaught(pokemon.BaseExperience) {
 		fmt.Printf("%s was caught!\n", name)
